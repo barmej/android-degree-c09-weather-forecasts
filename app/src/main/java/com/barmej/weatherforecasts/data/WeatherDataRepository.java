@@ -93,7 +93,8 @@ public class WeatherDataRepository {
         // Get LiveData object from database using Room
         final LiveData<WeatherInfo> weatherInfoLiveData = mAppDatabase.weatherInfoDao().getWeatherInfo();
 
-        // Create a new WeatherInfo call using Retrofit API interface
+        // No need to get data from Internet
+        /*// Create a new WeatherInfo call using Retrofit API interface
         mWeatherCall = mNetworkUtils.getApiInterface().getWeatherInfo(mNetworkUtils.getQueryMap());
 
         // Add request to the queue to be executed asynchronously
@@ -113,7 +114,7 @@ public class WeatherDataRepository {
             public void onFailure(@NonNull Call<WeatherInfo> call, @NonNull Throwable t) {
                 Log.e(TAG, t.getMessage());
             }
-        });
+        });*/
 
         return weatherInfoLiveData;
     }
@@ -128,7 +129,8 @@ public class WeatherDataRepository {
         // Get LiveData object from database using Room
         final LiveData<ForecastLists> forecastsLiveData = mAppDatabase.forecastDao().getForecasts();
 
-        // Create a new WeatherForecasts call using Retrofit API interface
+        // No need to get data from Internet
+        /*// Create a new WeatherForecasts call using Retrofit API interface
         mForecastsCall = mNetworkUtils.getApiInterface().getForecasts(mNetworkUtils.getQueryMap());
 
         // Add request to the queue to be executed asynchronously
@@ -148,7 +150,7 @@ public class WeatherDataRepository {
             public void onFailure(@NonNull Call<WeatherForecasts> call, @NonNull Throwable t) {
                 Log.e(TAG, t.getMessage());
             }
-        });
+        });*/
 
         return forecastsLiveData;
     }
