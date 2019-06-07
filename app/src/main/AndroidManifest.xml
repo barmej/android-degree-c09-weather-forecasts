@@ -27,6 +27,12 @@
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:parentActivityName=".ui.activities.MainActivity" />
+
+        <service
+            android:name=".data.sync.SyncIntentService"
+            android:enabled="true"
+            android:exported="false" />
+
     </application>
 
 </manifest>
