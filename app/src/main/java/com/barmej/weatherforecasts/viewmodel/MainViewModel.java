@@ -1,6 +1,11 @@
 package com.barmej.weatherforecasts.viewmodel;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -9,6 +14,7 @@ import androidx.lifecycle.LiveData;
 import com.barmej.weatherforecasts.data.WeatherDataRepository;
 import com.barmej.weatherforecasts.data.entity.ForecastLists;
 import com.barmej.weatherforecasts.data.entity.WeatherInfo;
+import com.barmej.weatherforecasts.data.sync.SyncUtils;
 
 /**
  * ViewModel class that hold data requests and temporary that survive configuration changes
@@ -31,6 +37,21 @@ public class MainViewModel extends AndroidViewModel {
     private LiveData<ForecastLists> mForecastListsLiveData;
 
     /**
+     * Context to be used when register and unregister BroadcastReceiver
+     */
+    private Context mContext;
+
+    /**
+     * BroadcastReceiver to receive network connectivity change events
+     */
+    BroadcastReceiver mConnectivityReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SyncUtils.sync(mContext);
+        }
+    };
+
+    /**
      * ViewModel Constructor
      *
      * @param application An instance of application class
@@ -46,6 +67,11 @@ public class MainViewModel extends AndroidViewModel {
 
         // Request forecasts lists  from the repository class
         mForecastListsLiveData = mRepository.getForecastsInfo();
+
+        // Register connectivity broadcast receiver
+        mContext = application.getApplicationContext();
+        IntentFilter connectivityIntentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        mContext.registerReceiver(mConnectivityReceiver, connectivityIntentFilter);
 
     }
 
@@ -71,6 +97,8 @@ public class MainViewModel extends AndroidViewModel {
     protected void onCleared() {
         // Cancel all ongoing requests
         mRepository.cancelDataRequests();
+        // Unregister connectivity broadcast receiver
+        mContext.unregisterReceiver(mConnectivityReceiver);
     }
 
 }
