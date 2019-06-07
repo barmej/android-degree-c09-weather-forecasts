@@ -11,6 +11,7 @@ import com.barmej.weatherforecasts.data.entity.ForecastLists;
 import com.barmej.weatherforecasts.data.entity.WeatherForecasts;
 import com.barmej.weatherforecasts.data.entity.WeatherInfo;
 import com.barmej.weatherforecasts.data.network.NetworkUtils;
+import com.barmej.weatherforecasts.data.sync.SyncUtils;
 import com.barmej.weatherforecasts.utils.AppExecutor;
 import com.barmej.weatherforecasts.utils.OpenWeatherDataParser;
 
@@ -58,14 +59,6 @@ public class WeatherDataRepository {
     private Call<WeatherInfo> mWeatherCall;
     private Call<WeatherForecasts> mForecastsCall;
 
-    /**
-     * @param context Context to use for some initializations
-     */
-    private WeatherDataRepository(Context context) {
-        mNetworkUtils = NetworkUtils.getInstance(context);
-        mAppDatabase = AppDatabase.getInstance(context);
-        mAppExecutor = AppExecutor.getInstance();
-    }
 
     /**
      * Method used to get an instance of WeatherDataRepository class
@@ -84,6 +77,16 @@ public class WeatherDataRepository {
     }
 
     /**
+     * @param context Context to use for some initializations
+     */
+    private WeatherDataRepository(Context context) {
+        mNetworkUtils = NetworkUtils.getInstance(context);
+        mAppDatabase = AppDatabase.getInstance(context);
+        mAppExecutor = AppExecutor.getInstance();
+        SyncUtils.sync(context);
+    }
+
+    /**
      * Get current weather data
      *
      * @return LiveData object to be notified when data change
@@ -92,29 +95,6 @@ public class WeatherDataRepository {
 
         // Get LiveData object from database using Room
         final LiveData<WeatherInfo> weatherInfoLiveData = mAppDatabase.weatherInfoDao().getWeatherInfo();
-
-        // Create a new WeatherInfo call using Retrofit API interface
-        mWeatherCall = mNetworkUtils.getApiInterface().getWeatherInfo(mNetworkUtils.getQueryMap());
-
-        // Add request to the queue to be executed asynchronously
-        mWeatherCall.enqueue(new Callback<WeatherInfo>() {
-            @Override
-            public void onResponse(@NonNull Call<WeatherInfo> call, @NonNull Response<WeatherInfo> response) {
-                if (response.code() == 200) {
-                    // Get WeatherInfo object from response body
-                    WeatherInfo weatherInfo = response.body();
-                    if (weatherInfo != null) {
-                        updateWeatherInfo(weatherInfo);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<WeatherInfo> call, @NonNull Throwable t) {
-                Log.e(TAG, t.getMessage());
-            }
-        });
-
         return weatherInfoLiveData;
     }
 
@@ -127,6 +107,47 @@ public class WeatherDataRepository {
 
         // Get LiveData object from database using Room
         final LiveData<ForecastLists> forecastsLiveData = mAppDatabase.forecastDao().getForecasts();
+        return forecastsLiveData;
+    }
+
+    /**
+     * Empty weather info table and save new weather info to database
+     */
+    public void updateWeatherInfo() {
+
+        // Create a new WeatherInfo call using Retrofit API interface
+        mWeatherCall = mNetworkUtils.getApiInterface().getWeatherInfo(mNetworkUtils.getQueryMap());
+
+        // Add request to the queue to be executed asynchronously
+        mWeatherCall.enqueue(new Callback<WeatherInfo>() {
+            @Override
+            public void onResponse(@NonNull Call<WeatherInfo> call, @NonNull Response<WeatherInfo> response) {
+                if (response.code() == 200) {
+                    // Get WeatherInfo object from response body
+                    final WeatherInfo weatherInfo = response.body();
+                    if (weatherInfo != null) {
+                        AppExecutor.getInstance().getDiskIO().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                mAppDatabase.weatherInfoDao().deleteAllWeatherInfo();
+                                mAppDatabase.weatherInfoDao().addWeatherInfo(weatherInfo);
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<WeatherInfo> call, @NonNull Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Empty forecasts table and save new forecasts info to database
+     */
+    public void updateForecastLists() {
 
         // Create a new WeatherForecasts call using Retrofit API interface
         mForecastsCall = mNetworkUtils.getApiInterface().getForecasts(mNetworkUtils.getQueryMap());
@@ -136,10 +157,17 @@ public class WeatherDataRepository {
             @Override
             public void onResponse(@NonNull Call<WeatherForecasts> call, @NonNull Response<WeatherForecasts> response) {
                 if (response.code() == 200) {
-                    WeatherForecasts weatherForecasts = response.body();
+                    final WeatherForecasts weatherForecasts = response.body();
                     if (weatherForecasts != null) {
-                        ForecastLists forecastLists = OpenWeatherDataParser.getForecastsDataFromWeatherForecasts(weatherForecasts);
-                        updateForecastLists(forecastLists);
+                        AppExecutor.getInstance().getDiskIO().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                ForecastLists forecastLists = OpenWeatherDataParser.getForecastsDataFromWeatherForecasts(weatherForecasts);
+                                mAppDatabase.forecastDao().deleteAllForecastsInfo();
+                                mAppDatabase.forecastDao().addForecastsList(forecastLists);
+                            }
+                        });
+
                     }
                 }
             }
@@ -150,8 +178,8 @@ public class WeatherDataRepository {
             }
         });
 
-        return forecastsLiveData;
     }
+
 
     /**
      * Cancel all data requests
@@ -159,37 +187,6 @@ public class WeatherDataRepository {
     public void cancelDataRequests() {
         mWeatherCall.cancel();
         mForecastsCall.cancel();
-    }
-
-
-    /**
-     * Empty weather info table and save new weather info to database
-     *
-     * @param weatherInfo new weather info object we got from API
-     */
-    private void updateWeatherInfo(final WeatherInfo weatherInfo) {
-        mAppExecutor.getDiskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                mAppDatabase.weatherInfoDao().deleteAllWeatherInfo();
-                mAppDatabase.weatherInfoDao().addWeatherInfo(weatherInfo);
-            }
-        });
-    }
-
-    /**
-     * Empty forecasts table and save new forecasts info to database
-     *
-     * @param forecastLists new forecasts list we got from API
-     */
-    private void updateForecastLists(final ForecastLists forecastLists) {
-        mAppExecutor.getDiskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                mAppDatabase.forecastDao().deleteAllForecastsInfo();
-                mAppDatabase.forecastDao().addForecastsList(forecastLists);
-            }
-        });
     }
 
 
