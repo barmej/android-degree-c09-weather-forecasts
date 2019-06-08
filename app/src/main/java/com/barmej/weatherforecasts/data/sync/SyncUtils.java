@@ -1,12 +1,15 @@
 package com.barmej.weatherforecasts.data.sync;
 
 import android.annotation.TargetApi;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,44 +18,38 @@ import java.util.concurrent.TimeUnit;
  */
 public class SyncUtils {
 
-
     /**
-     * Unique ID for the job
-     */
-    private static final int SYNC_SERVICE_JOB_ID = 0;
-
-    /*
-     * Interval at which to sync with the weather.
-     */
-    private static final int SYNC_INTERVAL_SECONDS = (int) TimeUnit.HOURS.toSeconds(3);
-
-    /**
-     * Schedules a repeating sync of weather data using JobScheduler.
+     * Schedules a repeating data sync work using WorkManager.
      *
      * @param context Context used to get JobScheduler system service
      */
     @TargetApi(Build.VERSION_CODES.N)
     public static void scheduleSync(Context context) {
 
-        // Get an instance of JobScheduler service
-        JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-
-        // Create component name for the JobService we want to schedule
-        ComponentName jobServiceName = new ComponentName(context, SyncJobService.class);
-
-        // Create the Job to periodically sync weather data
-        JobInfo jobInfo = new JobInfo.Builder(SYNC_SERVICE_JOB_ID, jobServiceName)
+        // Constrains declaration
+        Constraints constraints = new Constraints.Builder()
                 //  Network constraints on which this Job should run
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                // The options are to keep the Job "forever" and not die after device reboot
-                .setPersisted(true)
-                // Make this job repeated after specified interval
-                .setPeriodic(SYNC_INTERVAL_SECONDS)
-                // Once the Job is ready, call the builder's build method to return the Job
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                // Call the builder's build method build the Constraints object
                 .build();
 
-        // Schedule the Job with the JobScheduler
-        jobScheduler.schedule(jobInfo);
+        // Create PeriodicWorkRequest to periodically sync weather data
+        PeriodicWorkRequest periodicWorkRequest =
+                // Make this Worker repeated after specified interval
+                new PeriodicWorkRequest.Builder(SyncWorker.class, 3, TimeUnit.HOURS)
+                        // Set the constraints
+                        .setConstraints(constraints)
+                        // Call the builder's build method build the PeriodicWorkRequest
+                        .build();
+
+        // Get instance of WorkManager
+        WorkManager workManager = WorkManager.getInstance();
+
+        // Enqueues the periodic work request
+        workManager.enqueueUniquePeriodicWork(
+                "SyncWorker",
+                ExistingPeriodicWorkPolicy.KEEP,
+                periodicWorkRequest);
 
     }
 
