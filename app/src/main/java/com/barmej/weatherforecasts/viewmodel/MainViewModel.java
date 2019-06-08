@@ -45,7 +45,7 @@ public class MainViewModel extends AndroidViewModel {
     /**
      * BroadcastReceiver to receive network connectivity change events
      */
-    BroadcastReceiver mConnectivityReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mConnectivityReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             SyncUtils.startSync(mContext);
