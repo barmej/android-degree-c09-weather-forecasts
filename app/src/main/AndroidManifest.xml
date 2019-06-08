@@ -29,17 +29,10 @@
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:parentActivityName=".ui.activities.MainActivity" />
-
         <service
             android:name=".data.sync.SyncIntentService"
             android:enabled="true"
             android:exported="false" />
-
-        <service
-            android:name=".data.sync.SyncJobService"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
     </application>
 
 </manifest>
