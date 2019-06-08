@@ -1,6 +1,8 @@
 package com.barmej.weatherforecasts.data;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -79,11 +81,13 @@ public class WeatherDataRepository {
     /**
      * @param context Context to use for some initializations
      */
+    @TargetApi(Build.VERSION_CODES.N)
     private WeatherDataRepository(Context context) {
         mNetworkUtils = NetworkUtils.getInstance(context);
         mAppDatabase = AppDatabase.getInstance(context);
         mAppExecutor = AppExecutor.getInstance();
-        SyncUtils.sync(context);
+        // Schedule the job to sync weather data every period of time
+        SyncUtils.scheduleSync(context);
     }
 
     /**
