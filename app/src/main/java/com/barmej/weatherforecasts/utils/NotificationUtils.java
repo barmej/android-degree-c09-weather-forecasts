@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.text.format.DateUtils;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
@@ -77,7 +78,7 @@ public class NotificationUtils {
                 .getElapsedTimeSinceLastNotification(context);
 
         // We only want to show the notification if we haven't shown a notification in the past day.
-//        if (timeSinceLastNotification < DateUtils.DAY_IN_MILLIS) return;
+        if (timeSinceLastNotification < DateUtils.DAY_IN_MILLIS) return;
 
         // Notification Title
         String notificationTitle = context.getString(R.string.app_name);
