@@ -21,4 +21,12 @@
         android:summary="@string/pref_units_metric"
         android:title="@string/pref_units_label" />
 
+    <!-- To determine if the user want to get notifications or not-->
+    <CheckBoxPreference
+        android:defaultValue="@bool/show_notifications_by_default"
+        android:key="@string/pref_enable_notifications_key"
+        android:summaryOff="@string/pref_enable_notifications_not_enabled"
+        android:summaryOn="@string/pref_enable_notifications_enabled"
+        android:title="@string/pref_enable_notifications_label" />
+
 </PreferenceScreen>
