@@ -104,6 +104,25 @@ public final class SharedPreferencesHelper {
     }
 
     /**
+     * Returns true if the user prefers to see notifications of weather updates, false otherwise.
+     * This preference can be changed by the user from the SettingsFragment.
+     *
+     * @param context Used to access SharedPreferences
+     * @return true if the user prefers to see notifications, false otherwise
+     */
+    public static boolean areNotificationsEnabled(Context context) {
+        // As usual, we use the default SharedPreferences to access the user's preferences
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        // Key for accessing the preference for showing notifications
+        String displayNotificationsKey = context.getString(R.string.pref_enable_notifications_key);
+        // Default value If no preference has been chosen
+        boolean canShowNotifications = context.getResources()
+                .getBoolean(R.bool.show_notifications_by_default);
+        // If a value is stored with the key, we extract it here. If not, use a default
+        return sp.getBoolean(displayNotificationsKey, canShowNotifications);
+    }
+
+    /**
      * Returns the location currently set in Preferences. The default location this method
      * will return is "State of Kuwait", the home of the Barmej.com!
      *

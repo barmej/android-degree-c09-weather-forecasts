@@ -23,7 +23,9 @@
     <string name="pref_units_label">نظام وحدات القياس</string>
     <string name="pref_units_label_metric">النظام المتري</string>
     <string name="pref_units_label_imperial">النظام الامبراطوري</string>
-
+    <string name="pref_enable_notifications_label">تنبيهات حالة الطقس</string>
+    <string name="pref_enable_notifications_enabled">مفعل</string>
+    <string name="pref_enable_notifications_not_enabled">غير مفعل</string>
     <!-- - - - - - - - - - - - - - - - -
       - Used by WeatherUtils           -
       - - - - - - - - - - - - - - - - -->

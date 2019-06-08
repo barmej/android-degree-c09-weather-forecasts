@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -34,7 +35,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         int count = prefScreen.getPreferenceCount();
         for (int i = 0; i < count; i++) {
             Preference preference = prefScreen.getPreference(i);
-            setPreferenceSummary(preference);
+            if (preference != null && !(preference instanceof CheckBoxPreference)) {
+                setPreferenceSummary(preference);
+            }
         }
     }
 
@@ -57,7 +60,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
         // Update preference summary
         Preference preference = findPreference(key);
-        if (preference != null) {
+        if (preference != null && !(preference instanceof CheckBoxPreference)) {
             setPreferenceSummary(preference);
         }
 
