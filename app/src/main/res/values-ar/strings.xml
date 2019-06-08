@@ -98,5 +98,24 @@
     <string name="access_pressure">الضغط الجوي: <xliff:g id="pressure">%1$s</xliff:g></string>
     <string name="access_wind">سرعة واتجاه الرياح: <xliff:g id="wind">%1$s</xliff:g></string>
 
+    <!-- - - - - - - - - - - - - - - - - -
+      - Used by NotificationUtils        -
+      - - - - - - - - - - - - - - - - - -->
+
+    <!-- Notification channel name for weather status updates channel -->
+    <string name="weather_notification_channel_name">حالة الطقس</string>
+
+    <!-- Notification channel description for weather status updates channel -->
+    <string name="weather_notification_channel_description">
+        هذه القناة تستخدم لإظهار تنبيهات حالة الطقس بعد تحديث البيانات من الانترنت مرة كل يوم
+    </string>
+
+    <!-- The format of the notification we show when the weather is updated -->
+    <string name="format_notification">
+        حالة الطقس: <xliff:g id="condition">%1$s</xliff:g> -
+        الحرارة العظمى:<xliff:g id="high">%2$1.0f</xliff:g>
+        الحرارة الصغرى:<xliff:g id="low">%3$1.0f</xliff:g>
+    </string>
+
 
 </resources>

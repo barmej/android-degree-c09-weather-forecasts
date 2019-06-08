@@ -17,6 +17,11 @@ public final class SharedPreferencesHelper {
     private static final String PREF_SUNRISE_HOUR = "PREF_SUNRISE_HOUR";
     private static final String PREF_SUNSET_HOUR = "PREF_SUNSET_HOUR";
 
+    /**
+     * The time of the last notification appearance
+     */
+    private static final String PREF_LAST_NOTIFICATION_APPEARANCE = "PREF_LAST_NOTIFICATION_APPEARANCE";
+
 
     /**
      * Helper method to handle setting sunrise hour in Preferences
@@ -59,6 +64,44 @@ public final class SharedPreferencesHelper {
         return sp.getInt(PREF_SUNSET_HOUR, 0);
     }
 
+    /**
+     * Saves the time that a notification hen the notification shown.
+     * This will be used to get the elapsed time since a notification was shown.
+     *
+     * @param context            Used to access SharedPreferences
+     * @param timeOfNotification Time of last notification to save in milliseconds
+     */
+    public static void saveLastNotificationTime(Context context, long timeOfNotification) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putLong(PREF_LAST_NOTIFICATION_APPEARANCE, timeOfNotification).apply();
+    }
+
+    /**
+     * Returns the last time when a notification was shown in milliseconds
+     *
+     * @param context Used to access SharedPreferences
+     * @return the time when the last notification was shown in milliseconds
+     */
+    public static long getLastNotificationTimeInMillis(Context context) {
+        // As usual, we use the default SharedPreferences to access the user's preferences
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        // Get the last notification time in milliseconds when, 0 if no time saved before
+        return sp.getLong(PREF_LAST_NOTIFICATION_APPEARANCE, 0);
+    }
+
+
+    /**
+     * Returns the elapsed time in milliseconds since the last notification was shown. This is used
+     * as part of our check to see if we should show another notification when the weather is
+     * updated.
+     *
+     * @param context Used to access SharedPreferences as well as use other utility methods
+     * @return Elapsed time in milliseconds since the last notification was shown
+     */
+    public static long getElapsedTimeSinceLastNotification(Context context) {
+        long lastNotificationTimeMillis = SharedPreferencesHelper.getLastNotificationTimeInMillis(context);
+        return System.currentTimeMillis() - lastNotificationTimeMillis;
+    }
 
     /**
      * Returns the location currently set in Preferences. The default location this method
