@@ -122,6 +122,12 @@
     <!-- Data syncing notification message to be used by sync foreground service notification -->
     <string name="sync_service_notification">Weather data syncing …</string>
 
+    <!-- - - - - - - - - - - - - - - - - -
+      - Used by Widget        -
+      - - - - - - - - - - - - - - - - - -->
+    <string name="appwidget_text" translatable="false">EXAMPLE</string>
+    <string name="add_widget" translatable="false">Add widget</string>
+
     <!-- - - - - - - - - - - - - -
     - Untranslatable             -
     - - - - - - - - - - - - - - -->
