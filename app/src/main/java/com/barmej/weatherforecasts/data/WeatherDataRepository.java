@@ -96,10 +96,8 @@ public class WeatherDataRepository {
      * @return LiveData object to be notified when data change
      */
     public LiveData<WeatherInfo> getWeatherInfo() {
-
         // Get LiveData object from database using Room
-        final LiveData<WeatherInfo> weatherInfoLiveData = mAppDatabase.weatherInfoDao().getWeatherInfo();
-        return weatherInfoLiveData;
+        return mAppDatabase.weatherInfoDao().getWeatherInfo();
     }
 
     /**
@@ -108,10 +106,8 @@ public class WeatherDataRepository {
      * @return LiveData object to be notified when data change
      */
     public LiveData<ForecastLists> getForecastsInfo() {
-
         // Get LiveData object from database using Room
-        final LiveData<ForecastLists> forecastsLiveData = mAppDatabase.forecastDao().getForecasts();
-        return forecastsLiveData;
+        return mAppDatabase.forecastDao().getForecasts();
     }
 
     /**
@@ -189,8 +185,12 @@ public class WeatherDataRepository {
      * Cancel all data requests
      */
     public void cancelDataRequests() {
-        mWeatherCall.cancel();
-        mForecastsCall.cancel();
+        if (mWeatherCall != null) {
+            mWeatherCall.cancel();
+        }
+        if (mForecastsCall != null) {
+            mForecastsCall.cancel();
+        }
     }
 
 

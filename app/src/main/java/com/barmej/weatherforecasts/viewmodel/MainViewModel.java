@@ -48,7 +48,14 @@ public class MainViewModel extends AndroidViewModel {
     private BroadcastReceiver mConnectivityReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            SyncUtils.startSync(mContext);
+            mWeatherInfoLiveData.observeForever(new Observer<WeatherInfo>() {
+                @Override
+                public void onChanged(WeatherInfo weatherInfo) {
+                    if (weatherInfo == null) {
+                        SyncUtils.startSync(mContext);
+                    }
+                }
+            });
         }
     };
 
