@@ -33,11 +33,6 @@ public class NotificationUtils {
     private static final int WEATHER_NOTIFICATION_ID = 1;
 
     /**
-     * This notification ID used to show foreground sync service notification
-     */
-    public static final int SYNC_SERVICE_NOTIFICATION_ID = 2;
-
-    /**
      * Create a new notification channel for weather status update notifications
      *
      * @param context Context to be used to get NotificationManager from system services
@@ -148,27 +143,6 @@ public class NotificationUtils {
 
         // We just showed a notification, save the current time as last notification time
         SharedPreferencesHelper.saveLastNotificationTime(context, System.currentTimeMillis());
-
-    }
-
-    public static Notification getSyncingNotification(Context context) {
-
-        // Notification Title
-        String notificationTitle = context.getString(R.string.app_name);
-
-        // Notification Text
-        String notificationText = context.getString(R.string.sync_service_notification);
-
-        // Create notification
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(context, WEATHER_STATUS_CHANNEL_ID)
-                        .setOngoing(true)
-                        .setContentTitle(notificationTitle)
-                        .setContentText(notificationText)
-                        .setSmallIcon(R.drawable.ic_launcher_background);
-
-        // Build and return notification object
-        return notificationBuilder.build();
 
     }
 
