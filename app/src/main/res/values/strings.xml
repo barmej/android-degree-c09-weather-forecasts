@@ -119,6 +119,9 @@
         Low:<xliff:g id="low">%3$1.0f</xliff:g>
     </string>
 
+    <!-- Data syncing notification message to be used by sync foreground service notification -->
+    <string name="sync_service_notification">Weather data syncing …</string>
+
     <!-- - - - - - - - - - - - - -
     - Untranslatable             -
     - - - - - - - - - - - - - - -->
