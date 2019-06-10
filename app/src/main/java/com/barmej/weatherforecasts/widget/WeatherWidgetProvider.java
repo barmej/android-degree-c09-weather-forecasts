@@ -17,7 +17,6 @@ import androidx.lifecycle.Observer;
 import com.barmej.weatherforecasts.R;
 import com.barmej.weatherforecasts.data.WeatherDataRepository;
 import com.barmej.weatherforecasts.data.entity.WeatherInfo;
-import com.barmej.weatherforecasts.data.sync.SyncUtils;
 import com.barmej.weatherforecasts.ui.activities.MainActivity;
 import com.barmej.weatherforecasts.utils.CustomDateUtils;
 import com.barmej.weatherforecasts.utils.WeatherUtils;
@@ -49,7 +48,7 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
 
 
         // Get the data from the data base
-        WeatherDataRepository weatherDataRepository = WeatherDataRepository.getInstance(context);
+        final WeatherDataRepository weatherDataRepository = WeatherDataRepository.getInstance(context);
         LiveData<WeatherInfo> weatherInfo = weatherDataRepository.getWeatherInfo();
 
         weatherInfo.observeForever(new Observer<WeatherInfo>() {
@@ -89,7 +88,7 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
                 } else {
 
                     // If database is empty, try to get data from the internet and update the db
-                    SyncUtils.startSync(context);
+                    weatherDataRepository.getWeatherInfo();
 
                 }
 
