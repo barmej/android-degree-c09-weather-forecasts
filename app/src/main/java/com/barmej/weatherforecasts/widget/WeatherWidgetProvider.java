@@ -77,6 +77,12 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
                     // Display the icon
                     views.setImageViewResource(R.id.appwidget_image_weather_icon, weatherImageId);
 
+                    // Get weather condition description
+                    String weatherDescription = weatherInfo.getWeather().get(0).getDescription();
+
+                    // Set weather icon content description for accessibility purpose
+                    views.setContentDescription(R.id.appwidget_image_weather_icon, weatherDescription);
+
                     // Display the current city name
                     views.setTextViewText(R.id.appwidget_text_city, weatherInfo.getName());
 
