@@ -1,10 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  - This XML file define app widget meta data, such as minimum layout dimensions, its initial    -
+  - layout resource, how often to update the App Widget, and (optionally) a configuration        -
+  - Activity to launch at create-time.                    -                                      -
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:initialKeyguardLayout="@layout/weather_widget_provider"
-    android:initialLayout="@layout/weather_widget_provider"
-    android:minWidth="40dp"
-    android:minHeight="40dp"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:initialKeyguardLayout="@layout/weather_widget_small"
+    android:initialLayout="@layout/weather_widget_small"
+    android:minWidth="180dp"
+    android:minHeight="120dp"
+    android:minResizeWidth="40dp"
+    android:minResizeHeight="40dp"
+    android:previewImage="@drawable/weather_appwidget_preview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="86400000"
-    android:widgetCategory="home_screen"></appwidget-provider>
+    android:widgetCategory="home_screen" />
+
+
