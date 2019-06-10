@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?><!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  - This layout will be used to show large widget when widget size is more than 120 height       -
+  - and 180 width, this layout display today's weather info such as today's date, temperature,   -
+  - weather condition icon and current city!                                                     -
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appwidget_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_transparent_rounded_background">
+
+    <!-- Today's date -->
+    <TextView
+        android:id="@+id/appwidget_text_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/temperature_info_container"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:textColor="#ffffff"
+        android:textSize="24dp"
+        tools:text="Today, April 03" />
+
+
+    <!-- Horizontal LinearLayout to show today's temperature and weather condition icon -->
+    <LinearLayout
+        android:id="@+id/temperature_info_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center">
+
+        <!-- Today's temperature -->
+        <TextView
+            android:id="@+id/appwidget_text_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textColor="#ffffff"
+            android:textSize="36dp"
+            tools:text="12°" />
+
+        <!-- Icon indicating weather condition -->
+        <ImageView
+            android:id="@+id/appwidget_image_weather_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="8dp"
+            tools:src="@drawable/ic_broken_clouds" />
+
+
+    </LinearLayout>
+
+
+    <!-- Current city -->
+    <TextView
+        android:id="@+id/appwidget_text_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/temperature_info_container"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:textColor="#ffffff"
+        android:textSize="24dp"
+        tools:text="Kuwait" />
+
+</RelativeLayout>

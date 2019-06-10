@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   - This layout is the main layout which display current weather info, next 24 forecasts         -
   - and forecast of the coming few days!                                                         -
-  - This Layout file contains three parts inside vertical LinearLayout wrapped by a ScrollView   -                                     -
+  - This Layout file contains three parts inside vertical LinearLayout wrapped by a ScrollView   -
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

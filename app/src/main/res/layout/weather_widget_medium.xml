@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  - This layout will be used with medium widget size when widget width less than 180 and greater -
+  - than 120, this layout display today's weather temperature and weather condition icon         -                                                    -
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appwidget_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_transparent_rounded_background"
+    android:gravity="center">
+
+    <!-- Today's temperature -->
+    <TextView
+        android:id="@+id/appwidget_text_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textColor="#ffffff"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        tools:text="12°" />
+
+    <!-- Icon indicating weather condition -->
+    <ImageView
+        android:id="@+id/appwidget_image_weather_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="8dp"
+        tools:src="@drawable/ic_broken_clouds" />
+
+
+</LinearLayout>
