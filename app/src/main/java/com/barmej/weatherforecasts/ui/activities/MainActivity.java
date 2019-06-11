@@ -2,7 +2,6 @@ package com.barmej.weatherforecasts.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,17 +17,10 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-import androidx.work.Constraints;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.NetworkType;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 
 import com.barmej.weatherforecasts.R;
 import com.barmej.weatherforecasts.data.entity.ForecastLists;
 import com.barmej.weatherforecasts.data.entity.WeatherInfo;
-import com.barmej.weatherforecasts.sync.ForecastDataSyncWorker;
-import com.barmej.weatherforecasts.sync.WeatherDataSyncWorker;
 import com.barmej.weatherforecasts.ui.adapters.DaysForecastAdapter;
 import com.barmej.weatherforecasts.ui.adapters.HoursForecastAdapter;
 import com.barmej.weatherforecasts.ui.fragments.PrimaryWeatherInfoFragment;
@@ -38,8 +30,6 @@ import com.barmej.weatherforecasts.utils.NotificationUtils;
 import com.barmej.weatherforecasts.utils.SharedPreferencesHelper;
 import com.barmej.weatherforecasts.viewmodel.MainViewModel;
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * MainActivity that show current weather info, next hours & days forecasts
@@ -115,8 +105,6 @@ public class MainActivity extends AppCompatActivity {
         mHoursForecastsRecyclerView.setVisibility(View.INVISIBLE);
         mDaysForecastRecyclerView.setVisibility(View.INVISIBLE);
 
-        scheduleWeatherDataSync();
-
         // Request current weather data
         requestWeatherInfo();
 
@@ -126,43 +114,6 @@ public class MainActivity extends AppCompatActivity {
         // Update window background based on hour of the day
         changeWindowBackground();
 
-    }
-
-    /**
-     * This is where we schedule the sync works. It will be scheduled every 1 HOUR
-     * We used @enqueueUniquePeriodicWork method to make sure to cancel enqueue the work if it's already scheduled.
-     */
-    private void scheduleWeatherDataSync() {
-        // constrains declaration
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-        // first periodic work for syncing weather data
-        PeriodicWorkRequest weatherDataWorkRequest =
-                new PeriodicWorkRequest.Builder(WeatherDataSyncWorker.class,
-                        1, TimeUnit.HOURS)
-                        .setConstraints(constraints)
-                        .build();
-
-        // second periodic work for syncing forecast data
-        PeriodicWorkRequest forecastDataWorkRequest =
-                new PeriodicWorkRequest.Builder(ForecastDataSyncWorker.class,
-                        1, TimeUnit.HOURS)
-                        .setConstraints(constraints)
-                        .build();
-
-        // enqueues works
-        WorkManager.getInstance().enqueueUniquePeriodicWork(
-                "WeatherDataSyncWorker",
-                ExistingPeriodicWorkPolicy.KEEP,
-                weatherDataWorkRequest);
-
-        WorkManager.getInstance().enqueueUniquePeriodicWork(
-                "ForecastDataSyncWorker",
-                ExistingPeriodicWorkPolicy.KEEP,
-                forecastDataWorkRequest);
-
-        Log.i(TAG, "WorkManager scheduled ...");
     }
 
     /**

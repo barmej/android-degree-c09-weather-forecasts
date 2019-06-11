@@ -5,4 +5,4 @@ Course 11&12 lesson sample - Weather Forecasts
 
 <img src="screenshots/Screenshot_1556087493.png" width="285"> <img src="screenshots/Screenshot_1556087483.png" width="285"> <img src="screenshots/Screenshot_1556087479.png" width="285">
 
-
+<img src="screenshots/Screenshot_1560201143.png" width="285"> <img src="screenshots/Screenshot_1560201133.png" width="285"> <img src="screenshots/Screenshot_1560201236.png" width="285">
