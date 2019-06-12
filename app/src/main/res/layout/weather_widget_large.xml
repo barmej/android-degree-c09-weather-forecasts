@@ -19,8 +19,8 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="8dp"
         android:textColor="#ffffff"
-        android:textSize="24dp"
-        tools:text="Today, April 03" />
+        android:textSize="20dp"
+        tools:text="Wednesday, April 03" />
 
 
     <!-- Horizontal LinearLayout to show today's temperature and weather condition icon -->

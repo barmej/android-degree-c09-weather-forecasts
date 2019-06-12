@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/large_space"
             android:fontFamily="sans-serif"
-            android:text="@{CustomDateUtils.getFriendlyDateString(context, weatherInfo.dt, false)}"
+            android:text="@{CustomDateUtils.getFriendlyDateString(context, weatherInfo.dt, true, true)}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/weather_info_text_size"

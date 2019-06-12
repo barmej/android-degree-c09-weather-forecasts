@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/large_space"
-            android:text="@{CustomDateUtils.getFriendlyDateString(context, forecast.dt, false)}"
+            android:text="@{CustomDateUtils.getFriendlyDateString(context, forecast.dt, false, true)}"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:textColor="@color/text_primary"
             app:layout_constraintBottom_toTopOf="@+id/guideline"

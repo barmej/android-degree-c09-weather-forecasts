@@ -48,7 +48,7 @@ public final class CustomDateUtils {
      *                      the day of the week, today, or tomorrow, in addition to the date.
      * @return A user-friendly representation of the date such as "Today, June 8", "Tomorrow", or "Friday"
      */
-    public static String getFriendlyDateString(Context context, long timeInSeconds, boolean showFullDate) {
+    public static String getFriendlyDateString(Context context, long timeInSeconds, boolean showFullDate, boolean showTodayAndTomorrow) {
 
         // Convert time in seconds to time in milliseconds
         long timeInMillis = timeInSeconds * 1000;
@@ -60,10 +60,11 @@ public final class CustomDateUtils {
         long daysFromEpochToToday = elapsedDaysSinceEpoch(System.currentTimeMillis());
 
         if (daysFromEpochToProvidedDate == daysFromEpochToToday || showFullDate) {
+            // Get formatted readable date
+            String readableDate = getReadableDateString(context, timeInMillis);
             // Today, Tomorrow or the day name
             String dayName = getDayName(context, timeInMillis);
-            String readableDate = getReadableDateString(context, timeInMillis);
-            if (daysFromEpochToProvidedDate - daysFromEpochToToday < 2) {
+            if (daysFromEpochToProvidedDate - daysFromEpochToToday < 2 && showTodayAndTomorrow) {
                 // Replace day name by "today" or "tomorrow"
                 String localizedDayName = new SimpleDateFormat("EEEE", Locale.getDefault()).format(timeInMillis);
                 return readableDate.replace(localizedDayName, dayName);

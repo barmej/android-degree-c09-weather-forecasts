@@ -59,7 +59,7 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
                 if (weatherInfo != null) {
 
                     // Get human readable string from timestamp using getFriendlyDateString utility method
-                    String dateString = CustomDateUtils.getFriendlyDateString(context, weatherInfo.getDt(), false);
+                    String dateString = CustomDateUtils.getFriendlyDateString(context, weatherInfo.getDt(), true, false);
 
                     // Display friendly date string
                     views.setTextViewText(R.id.appwidget_text_date, dateString);
