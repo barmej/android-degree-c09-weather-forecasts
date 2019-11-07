@@ -6,6 +6,10 @@ This app is a simple Android app that show current weather info and the upcoming
 
 To use this repository, fork/clone it, or download a zip using the green "Clone or download" button at the top of the file list. Each branch correspond a video lesson in the course.
 After you clone the app you need to replace the api key in the strings with you own api key which you can get from OpenWeatherMap after creating your own free account.
+```xml
+<string name="api_key" translatable="false">YOUR API KEY HERE</string>
+```
+
 
 # Screenshots
 <img src="screenshots/Screenshot_1564180960.gif" width="210"> <img src="screenshots/Screenshot_1564180975.png" width="210"> <img src="screenshots/Screenshot_1564180980.png" width="210"> <img src="screenshots/Screenshot_1564262256.png" width="210">
